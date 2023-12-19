@@ -13,7 +13,7 @@ import path from 'path';
 const ASSETS_DIR = path.join(__dirname, '../assets');
 
 interface File {
-  content: string;
+  content: Buffer;
   contentType: string;
 }
 
@@ -50,7 +50,10 @@ export class AdminRouters extends MakeRouters {
     ) {
       const file = this.loadFile(`${ASSETS_DIR}/index.html`);
 
-      const content = file.content.replace(
+      // Buffer to utf8 string
+      const contentUtf8 = file.content.toString('utf8');
+
+      const content = contentUtf8.replace(
         '</head>',
         `<script>window.specification=${this.openAPISpecString}</script></head>`
       );
@@ -98,7 +101,7 @@ export class AdminRouters extends MakeRouters {
   }
 
   loadFile(filename: string): File {
-    const content = fs.readFileSync(filename, 'utf-8');
+    const content = fs.readFileSync(filename);
     const contentType = mime.lookup(filename);
 
     if (!contentType) {

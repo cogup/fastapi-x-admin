@@ -1,8 +1,8 @@
 {
   "name": "@cogup/fastapi-x-admin",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
-  "main": "src/main.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "lint": "eslint . --ext .ts",
     "build": "tsc",

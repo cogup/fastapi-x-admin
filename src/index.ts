@@ -1,21 +1,33 @@
-import { Reply, Request, MakeRouters, Get, OpenAPI } from '@cogup/fastapi';
+import {
+  Reply,
+  Request,
+  MakeRouters,
+  Get,
+  OpenAPI,
+  FastAPI
+} from '@cogup/fastapi';
 import fs from 'fs';
 import mime from 'mime-types';
+import path from 'path';
+
+const PUBLIC_DIR = path.join(__dirname, '../public');
 
 interface File {
   content: string;
   contentType: string;
 }
 
-export class PublicRoutes extends MakeRouters {
-  openAPISpec?: string;
+export class AdminRouters extends MakeRouters {
+  openAPISpec?: OpenAPI;
+  openAPISpecString?: string;
 
-  setOpenAPISpec(openAPISpec: OpenAPI) {
-    this.openAPISpec = JSON.stringify(openAPISpec);
+  onLoad(fastAPI: FastAPI) {
+    this.openAPISpec = fastAPI.getOpenAPISpec();
+    this.openAPISpecString = JSON.stringify(this.openAPISpec);
   }
 
   @Get('/api/*')
-  async apiRouter(request: Request, reply: Reply): Promise<Reply> {
+  async apiRouter(_request: Request, reply: Reply): Promise<Reply> {
     return reply.code(404).send({
       error: {
         code: 404,
@@ -32,8 +44,11 @@ export class PublicRoutes extends MakeRouters {
         ? 'index.html'
         : path.replace('//', '');
 
-    if (filename === 'index.html' || !this.fileExists(`./public/${filename}`)) {
-      const file = this.loadFile(`./public/index.html`);
+    if (
+      filename === 'index.html' ||
+      !this.fileExists(`${PUBLIC_DIR}/${filename}`)
+    ) {
+      const file = this.loadFile(`${PUBLIC_DIR}/index.html`);
 
       const content = file.content.replace(
         '</head>',
@@ -43,8 +58,8 @@ export class PublicRoutes extends MakeRouters {
       return reply.header('Content-Type', file.contentType).send(content);
     } else if (filename === 'manifest.json') {
       return reply.header('Content-Type', 'application/json').send({
-        short_name: 'FastApi',
-        name: 'FastApi Template API',
+        short_name: this.openAPISpec?.info?.title || 'FastApi API',
+        name: this.openAPISpec?.info?.title || 'FastApi API',
         icons: [
           {
             src: '/icons/64.png',
@@ -69,7 +84,7 @@ export class PublicRoutes extends MakeRouters {
       });
     }
 
-    const file = this.loadFile(`./public/${filename}`);
+    const file = this.loadFile(`${PUBLIC_DIR}/${filename}`);
     return reply.header('Content-Type', file.contentType).send(file.content);
   }
 

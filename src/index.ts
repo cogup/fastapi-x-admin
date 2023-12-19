@@ -3,7 +3,7 @@ import {
   Request,
   MakeRouters,
   Get,
-  OpenAPI,
+  type OpenAPI,
   FastAPI
 } from '@cogup/fastapi';
 import fs from 'fs';

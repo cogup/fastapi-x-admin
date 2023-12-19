@@ -52,7 +52,7 @@ export class AdminRouters extends MakeRouters {
 
       const content = file.content.replace(
         '</head>',
-        `<script>window.specification=${this.openAPISpec}</script></head>`
+        `<script>window.specification=${this.openAPISpecString}</script></head>`
       );
 
       return reply.header('Content-Type', file.contentType).send(content);

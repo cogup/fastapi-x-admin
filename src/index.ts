@@ -10,7 +10,7 @@ import fs from 'fs';
 import mime from 'mime-types';
 import path from 'path';
 
-const PUBLIC_DIR = path.join(__dirname, '../public');
+const ASSETS_DIR = path.join(__dirname, '../assets');
 
 interface File {
   content: string;
@@ -46,9 +46,9 @@ export class AdminRouters extends MakeRouters {
 
     if (
       filename === 'index.html' ||
-      !this.fileExists(`${PUBLIC_DIR}/${filename}`)
+      !this.fileExists(`${ASSETS_DIR}/${filename}`)
     ) {
-      const file = this.loadFile(`${PUBLIC_DIR}/index.html`);
+      const file = this.loadFile(`${ASSETS_DIR}/index.html`);
 
       const content = file.content.replace(
         '</head>',
@@ -84,7 +84,7 @@ export class AdminRouters extends MakeRouters {
       });
     }
 
-    const file = this.loadFile(`${PUBLIC_DIR}/${filename}`);
+    const file = this.loadFile(`${ASSETS_DIR}/${filename}`);
     return reply.header('Content-Type', file.contentType).send(file.content);
   }
 

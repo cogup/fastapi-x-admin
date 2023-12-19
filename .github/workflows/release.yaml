@@ -34,6 +34,9 @@ jobs:
       - name: Test
         run: npm run test
 
+      - name: Copy Public Files
+        run: cp -r assets dist && rm -r assets
+
       - name: Create Release
         uses: cogup/actions/lib-release@main
         with:

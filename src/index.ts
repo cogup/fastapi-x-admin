@@ -26,7 +26,7 @@ export class AdminRouters extends Builder {
     this.openAPISpecString = JSON.stringify(this.openAPISpec);
   }
 
-  @Get('/admin*')
+  @Get('/*')
   async publicRouter(request: Request, reply: Reply): Promise<Reply> {
     const path = request.url.split('?')[0].split('#')[0];
     const filename =

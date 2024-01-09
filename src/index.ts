@@ -45,7 +45,10 @@ export class AdminRouters extends Builder {
 
       const content = contentUtf8.replace(
         '</head>',
-        `<script>window.specification=${this.openAPISpecString}</script></head>`
+        `<script>
+        window.specification=${this.openAPISpecString};
+        window.rootPath='/admin';
+        </script></head>`
       );
 
       return reply.header('Content-Type', file.contentType).send(content);

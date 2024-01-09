@@ -26,13 +26,13 @@ export class AdminRouters extends Builder {
     this.openAPISpecString = JSON.stringify(this.openAPISpec);
   }
 
-  @Get('/admin')
+  @Get('/admin*')
   async publicRouter(request: Request, reply: Reply): Promise<Reply> {
     const path = request.url.split('?')[0].split('#')[0];
     const filename =
-      path === '/' || path === '/"index.html"'
+      path === 'admin' || path === 'admin/index.html'
         ? 'index.html'
-        : path.replace('//', '');
+        : path.replace('/admin/', '');
 
     if (
       filename === 'index.html' ||
@@ -52,7 +52,7 @@ export class AdminRouters extends Builder {
       );
 
       return reply.header('Content-Type', file.contentType).send(content);
-    } else if (filename === 'manifest.json') {
+    } else if (filename === 'admin/manifest.json') {
       return reply.header('Content-Type', 'application/json').send({
         short_name: this.openAPISpec?.info?.title || 'FastApi API',
         name: this.openAPISpec?.info?.title || 'FastApi API',

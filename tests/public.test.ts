@@ -10,10 +10,28 @@ describe('chat', () => {
     });
   });
 
-  test('should be able to create a chat', async () => {
+  test('open admin', async () => {
     const response = await fastAPI.api.inject({
       method: 'GET',
       url: '/admin'
+    });
+
+    expect(response.statusCode).toBe(200);
+  });
+
+  test('open manifest', async () => {
+    const response = await fastAPI.api.inject({
+      method: 'GET',
+      url: '/admin/manifest.json'
+    });
+
+    expect(response.statusCode).toBe(200);
+  });
+
+  test('open robots.txt', async () => {
+    const response = await fastAPI.api.inject({
+      method: 'GET',
+      url: '/admin/robots.txt'
     });
 
     expect(response.statusCode).toBe(200);

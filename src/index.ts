@@ -30,9 +30,9 @@ export class AdminRouters extends Builder {
   async publicRouter(request: Request, reply: Reply): Promise<Reply> {
     const path = request.url.split('?')[0].split('#')[0];
     const filename =
-      path === 'admin' || path === 'admin/index.html'
+      path === 'admin' || path === 'index.html'
         ? 'index.html'
-        : path.replace('/admin/', '');
+        : path.replace('/', '');
 
     if (
       filename === 'index.html' ||
@@ -47,7 +47,6 @@ export class AdminRouters extends Builder {
         '</head>',
         `<script>
         window.specification=${this.openAPISpecString};
-        window.rootPath='/admin';
         </script></head>`
       );
 

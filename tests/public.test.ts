@@ -36,4 +36,13 @@ describe('chat', () => {
 
     expect(response.statusCode).toBe(200);
   });
+
+  test('open health', async () => {
+    const response = await fastAPI.api.inject({
+      method: 'GET',
+      url: '/health'
+    });
+
+    expect(response.statusCode).toBe(200);
+  });
 });

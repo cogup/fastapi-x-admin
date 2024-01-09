@@ -1,10 +1,10 @@
 import {
   Reply,
   Request,
-  MakeRouters,
   Get,
   type OpenAPI,
-  FastAPI
+  FastAPI,
+  Builder
 } from '@cogup/fastapi';
 import fs from 'fs';
 import mime from 'mime-types';
@@ -17,7 +17,7 @@ interface File {
   contentType: string;
 }
 
-export class AdminRouters extends MakeRouters {
+export class AdminRouters extends Builder {
   openAPISpec?: OpenAPI;
   openAPISpecString?: string;
 
@@ -26,17 +26,7 @@ export class AdminRouters extends MakeRouters {
     this.openAPISpecString = JSON.stringify(this.openAPISpec);
   }
 
-  @Get('/api/*')
-  async apiRouter(_request: Request, reply: Reply): Promise<Reply> {
-    return reply.code(404).send({
-      error: {
-        code: 404,
-        message: 'Not found'
-      }
-    });
-  }
-
-  @Get('/*')
+  @Get('/admin')
   async publicRouter(request: Request, reply: Reply): Promise<Reply> {
     const path = request.url.split('?')[0].split('#')[0];
     const filename =

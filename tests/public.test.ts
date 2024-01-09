@@ -5,10 +5,9 @@ describe('chat', () => {
   let fastAPI: FastAPI;
 
   beforeAll(async () => {
-    fastAPI = new FastAPI() as FastAPI;
-
-    fastAPI.addRoutes(AdminRouters);
-    fastAPI.loadRoutes();
+    fastAPI = new FastAPI({
+      routes: [AdminRouters]
+    });
   });
 
   test('should be able to create a chat', async () => {
